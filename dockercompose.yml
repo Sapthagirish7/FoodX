@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  mysql:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: foodxdb
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  foodx:
+    build: .
+    depends_on:
+      - mysql
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/foodxdb?createTableIfNotExists=true
+      DB_USER: root
+      DB_PASS: root
+      SMTP_USER: your.email@gmail.com
+      SMTP_PASS: your_app_password
+    ports:
+      - "8088:8088"
+
+volumes:
+  mysql_data:
